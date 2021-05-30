@@ -21,7 +21,6 @@ class SearchViewController: UIViewController {
     override func loadView() {
         let view = SearchView()
 
-//        view.signInButton.addTarget(self, action: #selector(loginButtondidTap), for: .touchUpInside)
         self.view = view
         setupView()
     }

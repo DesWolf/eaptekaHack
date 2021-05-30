@@ -44,7 +44,7 @@ extension SearchPresenter: SearchPresenterType {
     }
     
     func load(search: String) {
-        service.search = search //.encodeUrl
+        service.search = search
         
         service.load { [weak self] result in
             guard let self = self, let result = result else { return }

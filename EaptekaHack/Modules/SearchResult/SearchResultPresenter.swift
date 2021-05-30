@@ -14,6 +14,8 @@ protocol SearchResultPresenterType {
     func numberOfRows() -> Int
     func identifier(at index: IndexPath) -> String
     func cellHeight(at index: IndexPath) -> Int
+    func load(search: String)
+
 }
 
 class SearchResultPresenter {
@@ -25,11 +27,15 @@ class SearchResultPresenter {
     // MARK: - Private properties
     
     private let moduleAssembly: ModuleAssemblyType
+    private var service: SearchServiceType
+    private var search: [Meds] = []
+    private var recomended: [Meds] = []
     
     // MARK: - Initializers
     
-    init(moduleAssembly: ModuleAssemblyType) {
+    init(moduleAssembly: ModuleAssemblyType, service: SearchServiceType) {
         self.moduleAssembly = moduleAssembly
+        self.service = service
     }
 }
 
@@ -57,10 +63,19 @@ extension SearchResultPresenter: SearchResultPresenterType {
         case 0:
             return TableCellWithCollectionViewModel(dataSource: self, delegate: self)
         default:
-            return DefaultSearchCellViewModel(name: SampleData.sampleTwo[index.row - 1].name,
-                                              substance: SampleData.sampleTwo[index.row - 1].substance ?? "",
-                                              reciptNeeded: SampleData.sampleTwo[index.row - 1].reciept ?? true,
-                                              price: SampleData.sampleTwo[index.row - 1].price ?? 0)
+            if search.isEmpty && recomended.isEmpty {
+                return DefaultSearchCellViewModel(name: SampleData.sampleTwo[index.row - 1].name,
+                                                  substance: SampleData.sampleTwo[index.row - 1].substance ?? "",
+                                                  reciptNeeded: SampleData.sampleTwo[index.row - 1].reciept ?? true,
+                                                  price: SampleData.sampleTwo[index.row - 1].price ?? 0)
+            } else {
+                
+                print("--->>>", index)
+                return DefaultSearchCellViewModel(name: search[index.row - 1].name,
+                                                  substance: search[index.row - 1].substance ?? "",
+                                                  reciptNeeded: search[index.row - 1].reciept ?? true,
+                                                  price: search[index.row - 1].price ?? 0)
+            }
         }
     }
     
@@ -71,6 +86,22 @@ extension SearchResultPresenter: SearchResultPresenterType {
     func viewDidLoad() {
 
     }
+    
+    func load(search: String) {
+        service.search = search
+        
+        service.load { [weak self] result in
+            guard let self = self, let result = result else { return }
+            
+            print(result.substance)
+
+                self.search = result.search
+            self.recomended = result.recomended
+          
+                self.viewController.reloadTable()
+
+        }
+    }
 }
 
 extension SearchResultPresenter: TableCellWithCollectionDelegate, TableCellWithCollectionDataSource {
@@ -79,9 +110,15 @@ extension SearchResultPresenter: TableCellWithCollectionDelegate, TableCellWithC
     }
     
     func item(at cellIndex: IndexPath, at index: Int) -> SelfConfigurableViewModel {
-        return CollectionCellViewModel(name: SampleData.sampleOne[index].name,
+        if search.isEmpty && recomended.isEmpty {
+            return CollectionCellViewModel(name: SampleData.sampleOne[index].name,
                                        reciptNeeded: SampleData.sampleOne[index].reciept ?? true,
                                        price: SampleData.sampleOne[index].price ?? 0)
+        } else {
+            return CollectionCellViewModel(name: recomended[index].name,
+                                       reciptNeeded: recomended[index].reciept ?? true,
+                                       price: recomended[index].price ?? 0)
+        }
     }
     
     func selectItem(at cellIndex: IndexPath, at index: Int) {

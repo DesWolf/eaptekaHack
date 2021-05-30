@@ -14,17 +14,22 @@ struct SearchResultAssembly: Assembly {
                 fatalError("Can't resolve moduleAssemby in SearchResultPresenter Presenter")
             }
             
-            return SearchResultPresenter(moduleAssembly: moduleAssembly)
+            guard let service = r.resolve(SearchServiceType.self) else {
+                fatalError("Could not resolve Search service")
+            }
+            
+            return SearchResultPresenter(moduleAssembly: moduleAssembly, service: service)
         }
         
         container.register(SearchResultViewControllerType.self) { r in
             let viewController = SearchResultViewController()
             viewController.modalPresentationStyle = .overFullScreen
-            guard let presenter = r.resolve(SearchResultPresenterType.self) else {
+            guard var presenter = r.resolve(SearchResultPresenterType.self) else {
                 fatalError("Can't resolve SearchResultPresenterType in SearchResult View Controller")
             }
             
             viewController.presenter = presenter
+            presenter.viewController = viewController
             return viewController
         }
     }

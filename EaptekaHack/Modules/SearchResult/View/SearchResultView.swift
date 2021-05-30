@@ -46,6 +46,7 @@ final class SearchResultView: UIView {
 
         topView.backgroundColor = .whiteBackground
         tableView.backgroundColor = .whiteBackground
+        tableView.keyboardDismissMode = .onDrag
         
         searchBar.backgroundImage = UIImage()
         searchBar.barTintColor = .bluePrimaryLight
