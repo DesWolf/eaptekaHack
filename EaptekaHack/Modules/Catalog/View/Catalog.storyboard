@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="otH-46-ite">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+    </dependencies>
+    <scenes>
+        <!--Поиск-->
+        <scene sceneID="LHg-Mk-nI3">
+            <objects>
+                <viewController id="otH-46-ite" customClass="CatalogViewController" customModule="EaptekaHack" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Поиск" image="Search" id="Veb-vY-gZi"/>
+                    <navigationItem key="navigationItem" id="Pwb-Lu-PE0"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ubG-MB-Q3M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="591" y="71"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Search" width="24.5" height="24"/>
+    </resources>
+</document>
